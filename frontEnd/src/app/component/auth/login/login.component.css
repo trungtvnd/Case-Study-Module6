@@ -1,0 +1,14 @@
+.form-login {
+  text-align: center;
+}
+
+#login-form {
+  height: 350px;
+  width: 450px;
+  margin: 80px auto 50px auto;
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, .5);
+}
+
+#login-button {
+  color: #1a1e21;
+}

@@ -1,0 +1,59 @@
+<br><br><br>
+<div class="container bootstrap snippets bootdey">
+<!--  <h1 class="text-primary">Profile</h1>-->
+  <hr>
+  <div class="row">
+    <!-- left column -->
+    <div class="col-md-3">
+      <div class="text-center">
+
+        <a (click)="openDialogChangeAvatar()" *ngIf="!user.avatar"><img src="https://bootdey.com/img/Content/avatar/avatar7.png" class="avatar img-circle img-thumbnail" alt="avatar"></a>
+        <a (click)="openDialogChangeAvatar()" *ngIf="user.avatar"><img src="{{user.avatar}}" class="avatar img-circle img-thumbnail" alt="avatar"></a>
+
+        <h6>Click on picture to Upload a different photo...</h6>
+
+
+      </div>
+    </div>
+
+    <!-- edit form column -->
+    <div class="col-md-9 personal-info">
+      <h2 class="text-primary">Personal info</h2>
+
+      <form class="form-horizontal" role="form" [formGroup]="formChangeProfile" (ngSubmit)="changeProfile()">
+        <div class="form-group">
+          <label class="col-lg-3 control-label">Full name:</label>
+          <div class="col-lg-8">
+            <input class="form-control" type="text" formControlName="fullName">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-lg-3 control-label">Username:</label>
+          <div class="col-lg-8">
+            <input class="form-control" type="text" value="{{user.userName}}" readonly="readonly" >
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-lg-3 control-label">Email:</label>
+          <div class="col-lg-8">
+            <input class="form-control" type="text" placeholder="email" formControlName="email">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-lg-3 control-label">Address:</label>
+          <div class="col-lg-8">
+            <input class="form-control" type="text"  formControlName="address">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-lg-3 control-label">Phone Number:</label>
+          <div class="col-lg-8">
+            <input class="form-control" type="text" formControlName="phone">
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+  </div>
+</div>
+<hr>

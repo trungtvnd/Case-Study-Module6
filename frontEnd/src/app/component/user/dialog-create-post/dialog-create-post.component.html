@@ -1,0 +1,82 @@
+<h1 mat-dialog-title>{{title}}</h1>
+<div mat-dialog-content id="formPost">
+  <form [formGroup]="formPost" (ngSubmit)="createPost()" class="example-form ">
+    <mat-form-field appearance="legacy" class="example-full-width">
+      <mat-error *ngIf="formPost.get('title')?.invalid
+        && formPost.get('title')?.touched">Not blank</mat-error>
+      <mat-label>Title</mat-label>
+      <input matInput placeholder="Placeholder" formControlName="title">
+      <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+      <mat-hint>Hint</mat-hint>
+    </mat-form-field>
+    <!--    <mat-form-field appearance="legacy" class="example-full-width">-->
+    <!--      <mat-label>Content</mat-label>-->
+    <!--&lt;!&ndash;      <input matInput placeholder="Placeholder" formControlName="content">&ndash;&gt;-->
+
+    <!--      <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>-->
+    <!--      <mat-hint>Hint</mat-hint>-->
+    <!--    </mat-form-field>-->
+    <ckeditor formControlName="content">
+      <textarea name="description" id="description" cols="30" rows="10" >des</textarea>
+    </ckeditor>
+
+    <mat-form-field appearance="legacy" class="example-full-width">
+      <mat-label>Description</mat-label>
+      <input matInput placeholder="Placeholder" formControlName="description">
+      <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+      <mat-hint>Hint</mat-hint>
+    </mat-form-field>
+
+    <mat-form-field appearance="legacy" class="example-full-width">
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="status">
+        <mat-option *ngFor="let s of status" value="{{s.id}}">
+          {{ s.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="legacy" class="example-full-width">
+      <mat-label>Hashtag</mat-label>
+      <mat-select formControlName="hashTags">
+        <mat-option *ngFor="let h of hashtags" value="{{h.id}}">
+          {{ h.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div>
+      <label><h4>Image</h4></label>
+      <img *ngIf="checkEdit" src="{{user.avatar}}" style="width: 200px; height: 200px; border-radius: 100%">
+      <input type="file"
+             id="file"
+             #userPhoto
+             (change)="onFileSelected($event)"
+             name="image"
+             autocomplete="off"
+      />
+      <div *ngIf="selectedFile" class="progress mt-2">-->
+        <div
+          class="progress-bar progress-bar-info"
+          role="progressbar"
+          attr.aria-valuenow="{{ percentage }}"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          [ngStyle]="{ width: percentage + '%' }"
+        >
+          {{ percentage }}%
+        </div>
+      </div>
+
+      <img [src]="fb" alt="Chưa chọn ảnh" style="width: 100px; height: 100px; border-radius: 100%">
+
+    </div>
+    <div mat-dialog-actions [align]="'end'">
+      <button mat-raised-button color="warn" mat-dialog-close>Close</button>
+      <button mat-raised-button color="primary" style="margin-left: 8px"
+              [disabled]="fb == ''">Save</button>
+    </div>
+  </form>
+
+
+</div>
