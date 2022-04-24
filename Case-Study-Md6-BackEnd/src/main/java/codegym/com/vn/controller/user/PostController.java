@@ -66,9 +66,10 @@ public class PostController {
         }
         return new ResponseEntity<>(posts, HttpStatus.OK);
     }
-    @GetMapping("displayPostByHashTagsIdLimit/{id}")
-    public ResponseEntity<Iterable<Post>> showAllPostByHashTagIdLimit(@PathVariable("id") Long idHashTag) {
-        Iterable<Post> posts = iPostService.findPostByHashtag(idHashTag);
+
+    @GetMapping("displayPostByHashTagsIdLimit/{idPost}/{idHasTag}")
+    public ResponseEntity<Iterable<Post>> showAllPostByHashTagIdLimit(@PathVariable("idPost") Long idPost,@PathVariable("idHasTag") Long idHashTag) {
+        Iterable<Post> posts = iPostService.findPostByHashtagLimit(idPost,idHashTag);
         if (!posts.iterator().hasNext()) {
             new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -78,6 +79,15 @@ public class PostController {
     @GetMapping("/displayPostByHashTagsIdAndUserId/{id1}/{id2}")
     public ResponseEntity<Iterable<Post>> showAllPostByHashTagId(@PathVariable("id1") Long idHashTag,@PathVariable("id2") Long idUser) {
         Iterable<Post> posts = iPostService.findAllByHashTags_IdAndUser_Id(idHashTag, idUser);
+        if (!posts.iterator().hasNext()) {
+            new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(posts, HttpStatus.OK);
+    }
+
+    @GetMapping("/displayPostByTopComment")
+    public ResponseEntity<Iterable<Post>> showAllPostByTopComment() {
+        Iterable<Post> posts = iPostService.findAllPostByTopComment();
         if (!posts.iterator().hasNext()) {
             new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }

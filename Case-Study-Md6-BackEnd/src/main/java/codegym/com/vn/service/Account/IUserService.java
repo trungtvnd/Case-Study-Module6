@@ -24,6 +24,4 @@ public interface IUserService {
 
     Optional<User> findByEmail(String email);
 
-
-    void activeUser(String token);
 }

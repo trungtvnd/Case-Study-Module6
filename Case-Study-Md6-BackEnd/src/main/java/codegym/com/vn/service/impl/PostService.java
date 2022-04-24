@@ -64,12 +64,17 @@ public class PostService implements IPostService {
     }
 
     @Override
-    public Iterable<Post> findPostByHashtagLimit(Long idHashtag) {
-        return iPostRepository.findAllByHashTags_Id_Limit(idHashtag);
+    public Iterable<Post> findPostByHashtagLimit(Long idPost,Long idHashtag) {
+        return iPostRepository.findAllByHashTags_Id_Limit( idPost,idHashtag);
     }
 
     @Override
     public Iterable<Post> findAllByHashTags_IdAndUser_Id(Long idHashtag, Long idUser) {
         return iPostRepository.findAllByHashTags_IdAndUser_Id(idHashtag, idUser);
+    }
+
+    @Override
+    public Iterable<Post> findAllPostByTopComment() {
+        return iPostRepository.findAllPostByTopComment();
     }
 }

@@ -176,7 +176,7 @@ public class AuthRestAPIs {
     public ResponseEntity<?> findUserByuserName(@PathVariable("username") String username) {
         Optional<User> user = userService.findByUsername(username);
         if (!user.isPresent()) {
-            new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return  new ResponseEntity<>(new ResponseMessage("notfounduser"),HttpStatus.OK);
         }
         return new ResponseEntity<>(user.get(), HttpStatus.OK);
     }

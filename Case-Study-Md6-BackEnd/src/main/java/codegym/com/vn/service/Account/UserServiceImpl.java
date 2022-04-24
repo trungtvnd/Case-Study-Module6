@@ -2,10 +2,8 @@ package codegym.com.vn.service.Account;
 
 
 
-import codegym.com.vn.mailConfirm.OnSendRegistrationUserConfirmEvent;
-import codegym.com.vn.mailConfirm.RegistrationUserToken;
 import codegym.com.vn.model.User;
-import codegym.com.vn.repository.IRegistrationUserTokenRepository;
+
 import codegym.com.vn.repository.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -20,9 +18,6 @@ import java.util.regex.Pattern;
 @Service
 public class UserServiceImpl implements IUserService {
 
-
-    @Autowired
-    private IRegistrationUserTokenRepository registrationUserTokenRepository;
     @Autowired
     private ApplicationEventPublisher applicationEventPublisher;
 
@@ -51,10 +46,8 @@ public class UserServiceImpl implements IUserService {
     @Override
     public User save(User user) {
 //        validateUser(user)
-        User account = repository.save(user);
-        createNewRegistrationUserToken(account);
-        sendConfirmationEmail(account.getEmail());
-        return account;
+
+        return repository.save(user);
     }
 //    public User validateUser(User user){
 //       String regex = "^[0-9]{10}";
@@ -65,16 +58,6 @@ public class UserServiceImpl implements IUserService {
 //        return user;
 //    }
 
-    private void createNewRegistrationUserToken(User account){
-        final String newToken = UUID.randomUUID().toString();
-
-        RegistrationUserToken token = new RegistrationUserToken(newToken, account);
-        registrationUserTokenRepository.save(token);
-    }
-
-    private void sendConfirmationEmail(String email){
-        applicationEventPublisher.publishEvent(new OnSendRegistrationUserConfirmEvent(email));
-    }
 
     @Override
     public Iterable<User> findAll() {
@@ -101,14 +84,6 @@ public class UserServiceImpl implements IUserService {
         return repository.findByEmail(email);
     }
 
-    @Override
-    public void activeUser(String token) {
-        RegistrationUserToken newToken = registrationUserTokenRepository.findByToken(token);
-        User account = newToken.getAccount();
-//        account.setStatusActive(true);
-        repository.save(account);
-        registrationUserTokenRepository.deleteByAccount_Id(newToken.getId());
-    }
 
 
 }

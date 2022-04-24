@@ -12,9 +12,11 @@ public interface IPostService extends InterfaceGeneral<Post> {
 
     Iterable<Post> findPostByHashtag(Long idHashtag);
 
-    Iterable<Post> findPostByHashtagLimit(Long idHashtag);
+    Iterable<Post> findPostByHashtagLimit(Long idPost,Long idHashtag);
 
     Iterable<Post> findAllByHashTags_IdAndUser_Id(Long idHashtag, Long idUser);
+
+    Iterable<Post> findAllPostByTopComment();
 
 
 }
