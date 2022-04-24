@@ -42,6 +42,9 @@ import { DialogLoginForCommentComponent } from './component/dialog-login-for-com
 import {Ng2SearchPipeModule} from "ng2-search-filter";
 import {Ng2OrderModule} from "ng2-order-pipe";
 import {NgxPaginationModule} from "ngx-pagination";
+import {AdminComponent} from "./component/admin/admin/admin.component";
+import {ToastrModule} from "ngx-toastr";
+
 
 
 
@@ -63,6 +66,7 @@ import {NgxPaginationModule} from "ngx-pagination";
     DialogChangeAvatarComponent,
     PostDetailComponent,
     DialogLoginForCommentComponent,
+    AdminComponent,
   ],
   imports: [
     BrowserModule,
@@ -90,7 +94,13 @@ import {NgxPaginationModule} from "ngx-pagination";
     Ng2SearchPipeModule,
     Ng2OrderModule,
     NgxPaginationModule,
-    AngularFireModule.initializeApp(environment.firebaseConfig, "cloud"), CKEditorModule
+    AngularFireModule.initializeApp(environment.firebaseConfig, "cloud"), CKEditorModule,
+    ToastrModule.forRoot({
+      timeOut: 1500,
+      progressBar: true,
+      progressAnimation: 'increasing',
+      preventDuplicates: true
+    })
 
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}],

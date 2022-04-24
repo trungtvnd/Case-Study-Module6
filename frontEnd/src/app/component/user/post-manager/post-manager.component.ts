@@ -20,6 +20,7 @@ import {UserService} from "../../../service/blog/user.service";
 import {TokenService} from "../../../service/auth/token.service";
 import {CommentPostService} from "../../../service/blog/comment-post.service";
 import {DialogCreatePostComponent} from "../dialog-create-post/dialog-create-post.component";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-post-manager',
@@ -28,13 +29,13 @@ import {DialogCreatePostComponent} from "../dialog-create-post/dialog-create-pos
 })
 export class PostManagerComponent implements OnInit {
 
-  idLogin!:number;
-  user!:User;
-  nameLogin!:any;
+  idLogin!: number;
+  user!: User;
+  nameLogin!: any;
 
-  posts!:Post[];
-  post!:Post;
-  displayedColumns: string[] = [ 'avatarPost', 'title','description', 'action'];
+  posts!: Post[];
+  post!: Post;
+  displayedColumns: string[] = ['avatarPost', 'title', 'description', 'action'];
   dataSource!: MatTableDataSource<any>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -45,13 +46,13 @@ export class PostManagerComponent implements OnInit {
   downloadURL!: Observable<string>;
 
 
-  formChangeAvatar!:FormGroup
+  formChangeAvatar!: FormGroup
 
-  error1:any = {
+  error1: any = {
     message: 'noemail'
   }
 
-  success:any = {
+  success: any = {
     message: 'change successfully'
   }
 
@@ -60,48 +61,46 @@ export class PostManagerComponent implements OnInit {
 
   check = false;
 
-  likes!:Like[];
+  likes!: Like[];
 
-  constructor(private postService:PostService,
-              private  dialog:MatDialog,
+  constructor(private postService: PostService,
+              private dialog: MatDialog,
               private storage: AngularFireStorage,
-              private statusService:StatusService,
-              private hashTagsService:HashTagsService,
-              private httpClient:HttpClient,
-              private authService:AuthService,
-              private userService:UserService,
-              private router:Router,
-              private formBuilder:FormBuilder,
-              private tokenService:TokenService,
-              private commentService:CommentPostService) { }
+              private statusService: StatusService,
+              private hashTagsService: HashTagsService,
+              private httpClient: HttpClient,
+              private authService: AuthService,
+              private userService: UserService,
+              private router: Router,
+              private formBuilder: FormBuilder,
+              private tokenService: TokenService,
+              private commentService: CommentPostService,
+              private toast:ToastrService) {
+  }
 
   ngOnInit(): void {
 
     this.formChangeAvatar = this.formBuilder.group({
-      avatar:['']
+      avatar: ['']
     })
 
     this.nameLogin = localStorage.getItem('nameLogin')
     this.user = JSON.parse(<string>localStorage.getItem("userLogin"))
-    // this.formChangeProfile.controls['fullName'].setValue(this.user.fullName),
-    //   this.formChangeProfile.controls['email'].setValue(this.user.email),
-    //   this.formChangeProfile.controls['address'].setValue(this.user.address),
-    //   this.formChangeProfile.controls['phone'].setValue(this.user.phone),
-      this.findAllPostByUserId()
+    this.findAllPostByUserId()
     this.getAllHashTag()
     this.findUser(this.nameLogin)
   }
 
-  public findAllPostByUserId(){
-    this.postService.findAllPostByUserId(localStorage.getItem('idLogin')).subscribe({
-      next:(result)=>{
+  public findAllPostByUserId() {
+    this.postService.findAllPostByUserId(this.user.id).subscribe({
+      next: (result) => {
         this.posts = result
         this.dataSource = new MatTableDataSource(result)
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
         console.log(this.dataSource)
-      }, error:(err)=>{
-        alert('Error while searching product')
+      }, error: (err) => {
+        // alert('Error while searching product')
       }
     })
   }
@@ -109,11 +108,12 @@ export class PostManagerComponent implements OnInit {
   openDialogPost() {
     this.dialog.open(DialogCreatePostComponent, {
       width: '80%'
-    }).afterClosed().subscribe(()=>{
+    }).afterClosed().subscribe(() => {
       console.log(this.findAllPostByUserId())
       this.findAllPostByUserId();
     });
   }
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -122,8 +122,8 @@ export class PostManagerComponent implements OnInit {
     }
   }
 
-  editPost(row:any) {
-    this.dialog.open(DialogCreatePostComponent,{
+  editPost(row: any) {
+    this.dialog.open(DialogCreatePostComponent, {
       width: '80%',
       data: row
     }).afterClosed().subscribe(() => {
@@ -132,12 +132,12 @@ export class PostManagerComponent implements OnInit {
     })
   }
 
-  deletePost(id:any) {
+  deletePost(id: any) {
     if (confirm('Are you sure delete product: ' + '?')) {
-      this.postService.deleteLike(id).subscribe(data=>{
-        this.commentService.deleteCommentByPostId(id).subscribe(data=>{
+      this.postService.deleteLike(id).subscribe(data => {
+        this.commentService.deleteCommentByPostId(id).subscribe(data => {
           this.postService.deletePost(id).subscribe(() => {
-              alert('Delete Successfully!');
+            this.toast.success("Delete successfully", "Alert")
               this.findAllPostByUserId()
             }
           );
@@ -149,13 +149,10 @@ export class PostManagerComponent implements OnInit {
   }
 
 
-  public findUser(fullName:string){
+  public findUser(fullName: string) {
     this.userService.findUserByFullName(fullName).subscribe(data => {
       this.user = data;
       this.idLogin = data.id
-      console.log(data.id)
-      console.log('idLogin haha', this.idLogin)
-      localStorage.setItem("idLogin", String(data.id))
     })
   }
 
@@ -163,7 +160,7 @@ export class PostManagerComponent implements OnInit {
     this.router.navigate([''])
   }
 
-  public logout(){
+  public logout() {
     localStorage.removeItem('nameLogin')
     localStorage.removeItem('idLogin')
     localStorage.removeItem('roleLogin')
@@ -171,14 +168,13 @@ export class PostManagerComponent implements OnInit {
   }
 
 
-
   getUser() {
 
   }
-  public checkAvatar(){
+
+  public checkAvatar() {
     return this.user.avatar != null;
   }
-
 
 
   // openDialogPassword() {
@@ -193,7 +189,8 @@ export class PostManagerComponent implements OnInit {
     this.checkChangeAvatar = true;
     this.check = true
   }
-  onFileSelected(event:any) {
+
+  onFileSelected(event: any) {
     var n = Date.now();
     const file = event.target.files[0];
     const filePath = `RoomsImages/${n}`;
@@ -223,29 +220,28 @@ export class PostManagerComponent implements OnInit {
     const changeAvatar = {
       avatar: this.fb
     }
-    this.userService.changeAvatar(changeAvatar).subscribe(data=>{
+    this.userService.changeAvatar(changeAvatar).subscribe(data => {
       console.log(data)
       alert("change avatar successfully")
-      this.router.navigate(['/user1']).then(()=>{
+      this.router.navigate(['/user1']).then(() => {
         window.location.reload()
       })
     })
   }
 
-  public getAllHashTag(){
+  public getAllHashTag() {
     this.postService.findAllHashTags().subscribe({
-      next:(res)=>{
+      next: (res) => {
         this.hashTags = res
-      }, error:(err)=>{
+      }, error: (err) => {
         alert('Error while searching product')
       }
     })
   }
 
 
-
-  findPostByHashTagId(idHashTag: number, idUser:number) {
-    this.postService.findPostByHashTagIdAndUser(idHashTag,idUser ).subscribe(data=>{
+  findPostByHashTagId(idHashTag: number, idUser: number) {
+    this.postService.findPostByHashTagIdAndUser(idHashTag, idUser).subscribe(data => {
       this.posts = data
       this.dataSource = new MatTableDataSource(data)
       this.dataSource.paginator = this.paginator;
@@ -257,17 +253,17 @@ export class PostManagerComponent implements OnInit {
 
   getPostDetailUserId(id: number) {
     this.postService.findPostById(id).subscribe(data => {
-      this.post= data;
+      this.post = data;
       console.log(data)
       localStorage.setItem('post', JSON.stringify(data))
-      this.router.navigate(['post']).then(()=>{
+      this.router.navigate(['post']).then(() => {
         window.location.reload();
       })
     })
   }
 
-  findLikeByPostId(idPost: any){
-    this.postService.findAllLikeByPostId(idPost).subscribe(data=>{
+  findLikeByPostId(idPost: any) {
+    this.postService.findAllLikeByPostId(idPost).subscribe(data => {
       this.likes = data
     })
   }

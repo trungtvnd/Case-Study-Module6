@@ -13,6 +13,7 @@ import {HttpClient} from "@angular/common/http";
 import {AuthService} from "../../../service/auth/auth.service";
 import {UserService} from "../../../service/blog/user.service";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-dialog-create-post',
@@ -50,7 +51,8 @@ export class DialogCreatePostComponent implements OnInit {
               private authService:AuthService,
               private userService:UserService,
               private matDialogRef: MatDialogRef<DialogCreatePostComponent>,
-              @Inject(MAT_DIALOG_DATA) public editData: any) { }
+              @Inject(MAT_DIALOG_DATA) public editData: any,
+              private toast:ToastrService) { }
 
   ngOnInit(): void {
     this.formPost = this.formBuilder.group({
@@ -118,9 +120,10 @@ export class DialogCreatePostComponent implements OnInit {
     };
     this.postService.createPost(post).subscribe(() => {
       if(this.editData){
-        alert('Edit Successfully');
+        this.toast.success("Edit successfully", "Alert")
       }else {
-        alert('Create Successfully')
+        this.toast.success("Create successfully", "Alert")
+
       }
 
       console.log(post)

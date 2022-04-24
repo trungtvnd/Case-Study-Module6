@@ -79,6 +79,10 @@ export class LoginComponent implements OnInit {
                     this.role = Role.User
                   }
                 }
+                this.authService.findUserByUsername(this.form.username).subscribe(data=>{
+                  this.user = data
+                  localStorage.setItem("userLogin", JSON.stringify(this.user))
+                })
                 // if(this.role === Role.Admin){
                 //   this.router.navigate(['/admin'])
                 // }else if(this.role === Role.User){
@@ -89,10 +93,7 @@ export class LoginComponent implements OnInit {
                 this.router.navigate(['']).then(() => {
                   window.location.reload();
                 })
-                this.authService.findUserByUsername(this.form.username).subscribe(data=>{
-                  this.user = data
-                  localStorage.setItem("userLogin", JSON.stringify(this.user))
-                })
+
 
                 localStorage.setItem("nameLogin", this.nameLogin)
                 localStorage.setItem("roleLogin", this.role)

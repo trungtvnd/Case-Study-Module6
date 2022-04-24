@@ -8,6 +8,7 @@ import {Router} from "@angular/router";
 import {DialogChangeAvatarComponent} from "../dialog-change-avatar/dialog-change-avatar.component";
 import {MatDialog} from "@angular/material/dialog";
 import {User} from "../../../model/User";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-profile',
@@ -37,7 +38,8 @@ export class ProfileComponent implements OnInit {
               private userService: UserService,
               private tokenService: TokenService,
               private router: Router,
-              private dialog: MatDialog) {
+              private dialog: MatDialog,
+              private toast:ToastrService) {
   }
 
   ngOnInit(): void {
@@ -73,10 +75,10 @@ export class ProfileComponent implements OnInit {
     }
     this.userService.changeProfile(changeProfile).subscribe(data => {
       if (JSON.stringify(data) == JSON.stringify(this.error1)) {
-        alert('trung email nhap lai')
+        this.toast.warning("Email had existed, please entry again")
       }
       if (JSON.stringify(data) == JSON.stringify(this.success)) {
-        alert('Change Profile Thanh cong')
+        this.toast.success("Change Profile successfully", "alert")
         this.tokenService.setName(this.formChangeProfile.value.fullName)
         this.router.navigate(['/profile']).then(() => {
           window.location.reload()

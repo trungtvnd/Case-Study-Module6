@@ -19,6 +19,7 @@ export class UserService {
   findUserByFullName(fullName: string):Observable<User>{
     return this.httpClient.get<User>(`http://localhost:8080/user/post/users/${fullName}`)
   }
+
   changeProfile(user:any):Observable<JwtResponse>{
     return this.httpClient.put<JwtResponse>(`http://localhost:8080/api/auth/changeProfile`, user)
   }
