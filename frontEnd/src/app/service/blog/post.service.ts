@@ -26,8 +26,8 @@ export class PostService {
   findPostByHashTagId(id: number):Observable<Post[]>{
     return this.httpClient.get<Post[]>(`http://localhost:8080/user/post/displayPostByHashTagsId/${id}`)
   }
-  findPostByHashTagIdLimit(id: number):Observable<Post[]>{
-    return this.httpClient.get<Post[]>(`http://localhost:8080/user/post/displayPostByHashTagsIdLimit/${id}`)
+  findPostByHashTagIdLimit(idPost:number,idHasTag: number):Observable<Post[]>{
+    return this.httpClient.get<Post[]>(`http://localhost:8080/user/post/displayPostByHashTagsIdLimit/${idPost}/${idHasTag}`)
   }
 
 
@@ -38,6 +38,11 @@ export class PostService {
   findAllHashTags():Observable<HashTags[]>{
     return this.httpClient.get<HashTags[]>(`http://localhost:8080/api/HashTags`)
   }
+
+  findAllPostByTopComment():Observable<Post[]>{
+    return this.httpClient.get<Post[]>(`http://localhost:8080/user/post/displayPostByTopComment`)
+  }
+
 
 
 

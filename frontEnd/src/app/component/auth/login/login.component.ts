@@ -4,7 +4,7 @@ import {Router} from "@angular/router";
 import {SignInForm} from "../../../model/sign-in-form";
 import {AuthService, Role} from "../../../service/auth/auth.service";
 import {TokenService} from "../../../service/auth/token.service";
-
+import {User} from "../../../model/User";
 
 
 @Component({
@@ -21,7 +21,12 @@ export class LoginComponent implements OnInit {
   isLoginFailed = false;
   role!: string
   checkBlock = false
-  nameLogin!:string
+  nameLogin!: string
+  error1: any = {
+    message: 'notfounduser'
+  }
+
+  user!:User
 
   constructor(private authService: AuthService,
               private tokenService: TokenService,
@@ -46,7 +51,10 @@ export class LoginComponent implements OnInit {
       this.form.password
     )
     this.authService.findUserByUsername(this.form.username).subscribe(data => {
-        console.log('user', data)
+        if (JSON.stringify(data) == JSON.stringify(this.error1)) {
+          this.status = 'Not Found Username'
+        }
+
         if (data.status == 'block') {
           this.checkBlock = true
           this.status = 'Account was Blocked'
@@ -64,7 +72,6 @@ export class LoginComponent implements OnInit {
                 this.isLoginFailed = false;
                 this.isLoggedIn = true;
                 this.nameLogin = data.fullName
-                // console.log(this.nameLogin)
                 for (let i = 0; i < data.roles.length; i++) {
                   if (data.roles[i]['authority'] === 'ADMIN') {
                     this.role = Role.Admin
@@ -81,6 +88,10 @@ export class LoginComponent implements OnInit {
                 // }
                 this.router.navigate(['']).then(() => {
                   window.location.reload();
+                })
+                this.authService.findUserByUsername(this.form.username).subscribe(data=>{
+                  this.user = data
+                  localStorage.setItem("userLogin", JSON.stringify(this.user))
                 })
 
                 localStorage.setItem("nameLogin", this.nameLogin)
@@ -108,6 +119,10 @@ export class LoginComponent implements OnInit {
 
 
   public checkBlockLogin(username: any) {
+
+  }
+
+  public findUserByUsername(username:any){
 
   }
 

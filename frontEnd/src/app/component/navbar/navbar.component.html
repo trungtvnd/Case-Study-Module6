@@ -17,16 +17,13 @@
             <a class="nav-link" routerLink="blog-list">Blog Entries</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link">Post Details</a>
-          </li>
-          <li class="nav-item">
             <a class="nav-link" >Contact Us</a>
           </li>
           <li class="nav-item" *ngIf="!checkLogin">
             <a class="nav-link" routerLink="login">Login</a>
           </li>
           <li class="nav-item" *ngIf="checkLogin" >
-            <a [matMenuTriggerFor]="menu" class="nav-link">{{nameLogin}}</a>
+            <a id="userInfo" [matMenuTriggerFor]="menu" class="nav-link" style="color: blue"><i>hi, {{nameLogin}}</i></a>
             <mat-menu #menu="matMenu">
               <a mat-menu-item routerLink="/user" *ngIf="roleLogin == 'USER'">Your Post</a>
               <a mat-menu-item routerLink="/profile" *ngIf="roleLogin == 'USER'">Profile</a>

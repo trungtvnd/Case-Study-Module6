@@ -1,0 +1,45 @@
+
+<div class="container">
+  <div class="row">
+    <div class="col-12" style="margin-top: 20px">
+      <div><h2><strong>Login</strong></h2></div>
+      <mat-card style="margin: 50px 0">
+<!--                        <div *ngIf="isLoggedIn; else loggedOut">-->
+<!--                            <h1 style="color:royalblue;">Welcome: <strong style="color: fuchsia">{{name}}</strong> </h1>-->
+<!--                            <button routerLink="/user-account" mat-stroked-button color="accent" class="mat-button-toggle-group btn-outline-success">User Account-->
+<!--                                <mat-icon color="accent" matPrefix>account_box</mat-icon>-->
+<!--                            </button>-->
+<!--                        </div>-->
+
+        <form class="form-login" #f="ngForm" (ngSubmit)="f.form.valid &&ngSubmit()" novalidate>
+          <mat-error *ngIf="!isLoginFailed" >{{status}}</mat-error>
+          <mat-error *ngIf="f.submitted&&isLoginFailed" class="alert alert-danger">{{status}}</mat-error>
+          <mat-form-field style="width: 350px" appearance="outline">
+            <mat-label>Username</mat-label>
+            <input name="username" [(ngModel)]="form.username" #username="ngModel" matInput required minlength="3" maxlength="50">
+            <mat-icon color="accent" matSuffix>account_circle</mat-icon>
+            <mat-error *ngIf="username.hasError('required')">The username is required</mat-error>
+            <mat-error *ngIf="username.hasError('minlength')">The username must more than 2 character</mat-error>
+          </mat-form-field><br>
+          <mat-form-field style="width: 350px" appearance="outline">
+            <mat-label>Enter your password</mat-label>
+            <input matInput [type]="hide ? 'password' : 'text'" name="password" [(ngModel)]="form.password" #password="ngModel"required minlength="6" maxlength="100">
+            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+              <mat-icon color="accent">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+            <mat-error *ngIf="password.hasError('required')">Password is required</mat-error>
+            <mat-error *ngIf="password.hasError('minlength')">Password must more than 5 character</mat-error>
+          </mat-form-field><br>
+          <button mat-stroked-button color="accent" class="mat-button-toggle-group btn-outline-success">Login
+            <mat-icon color="accent" matSuffix>arrow_right_alt</mat-icon>
+          </button>
+          <!--                        <mat-error *ngIf="f.submitted&&isLoginFailed" class="alert alert-danger">-->
+          <!--                            {{status}}-->
+          <!--                        </mat-error>-->
+        </form>
+
+
+      </mat-card>
+    </div>
+  </div>
+</div>

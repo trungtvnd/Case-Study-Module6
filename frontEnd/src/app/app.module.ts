@@ -38,6 +38,10 @@ import {MatSelectModule} from "@angular/material/select";
 import { ProfileComponent } from './component/user/profile/profile.component';
 import { DialogChangeAvatarComponent } from './component/user/dialog-change-avatar/dialog-change-avatar.component';
 import {PostDetailComponent} from "./component/post-detail/post-detail.component";
+import { DialogLoginForCommentComponent } from './component/dialog-login-for-comment/dialog-login-for-comment.component';
+import {Ng2SearchPipeModule} from "ng2-search-filter";
+import {Ng2OrderModule} from "ng2-order-pipe";
+import {NgxPaginationModule} from "ngx-pagination";
 
 
 
@@ -58,6 +62,7 @@ import {PostDetailComponent} from "./component/post-detail/post-detail.component
     ProfileComponent,
     DialogChangeAvatarComponent,
     PostDetailComponent,
+    DialogLoginForCommentComponent,
   ],
   imports: [
     BrowserModule,
@@ -82,6 +87,9 @@ import {PostDetailComponent} from "./component/post-detail/post-detail.component
     MatOptionModule,
     RouterModule,
     AngularFireStorageModule,
+    Ng2SearchPipeModule,
+    Ng2OrderModule,
+    NgxPaginationModule,
     AngularFireModule.initializeApp(environment.firebaseConfig, "cloud"), CKEditorModule
 
   ],

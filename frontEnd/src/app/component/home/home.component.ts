@@ -35,20 +35,22 @@ export class HomeComponent implements OnInit {
       localStorage.removeItem('userLogin')
     }
 
-    this.findUser(this.nameLogin)
+    // this.findUser(this.nameLogin)
   }
 
-  public findUser(fullName:any){
-    if(this.tokenService.getToken()){
-      this.userService.findUserByFullName(fullName).subscribe(data => {
-        this.user = data;
-        console.log(data.id)
-        localStorage.setItem("idLogin", String(data.id))
-        localStorage.setItem("userLogin", JSON.stringify(this.user))
-      })
-    }
+  // public findUser(fullName:any){
+  //   if(this.tokenService.getToken()){
+  //     this.userService.findUserByFullName(fullName).subscribe(data => {
+  //       this.user = data;
+  //       console.log(data.id)
+  //       localStorage.setItem("idLogin", String(data.id))
+  //       localStorage.setItem("userLogin", JSON.stringify(this.user))
+  //     })
+  //   }
 
-  }
+
+
+  // }
 
 
 

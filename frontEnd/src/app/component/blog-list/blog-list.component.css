@@ -1,4 +1,39 @@
 .avatarBlog{
-  width: 300px;
+  width: 250px;
   height: 250px;
+}
+
+.maxLine {
+  display: block;
+  display: -webkit-box;
+  max-width: 100%;
+  height: 43px;
+  margin: 0 auto;
+  font-size: 14px;
+  line-height: 1;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+}
+.maxLineTitle{
+  display: block;
+  display: -webkit-box;
+  max-width: 100%;
+  height: 50px;
+  margin: 0 auto;
+  font-size: 14px;
+  line-height: 2;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/*#maxLine:hover {*/
+/*  overflow: visible;*/
+/*}*/
+.content > ul > li{
+  text-decoration: none;
+  cursor: pointer;
 }
