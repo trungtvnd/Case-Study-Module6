@@ -67,6 +67,7 @@ export class LoginComponent implements OnInit {
               if (data.token != undefined) {
                 this.tokenService.setToken(data.token)
                 this.tokenService.setName(data.fullName)
+                this.tokenService.setId(data.id)
                 this.name = this.tokenService.getName()
                 this.tokenService.setRoles(data.roles)
                 this.isLoginFailed = false;
@@ -82,6 +83,7 @@ export class LoginComponent implements OnInit {
                 this.authService.findUserByUsername(this.form.username).subscribe(data=>{
                   this.user = data
                   localStorage.setItem("userLogin", JSON.stringify(this.user))
+                  localStorage.setItem("idLogin", JSON.stringify(this.user.id))
                 })
                 // if(this.role === Role.Admin){
                 //   this.router.navigate(['/admin'])
@@ -94,9 +96,9 @@ export class LoginComponent implements OnInit {
                   window.location.reload();
                 })
 
-
                 localStorage.setItem("nameLogin", this.nameLogin)
                 localStorage.setItem("roleLogin", this.role)
+
 
               } else {
                 this.isLoggedIn = false;

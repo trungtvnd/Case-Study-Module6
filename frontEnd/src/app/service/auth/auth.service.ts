@@ -23,6 +23,7 @@ const API_AUTH = environment.apiAuth;
 const TOKEN_KEY = 'Token_Key';
 const NAME_KEY = 'Name_Key';
 const ROLE_KEY = 'Role_Key';
+const ID_KEY = 'id_Key';
 @Injectable({
   providedIn: 'root'
 })
@@ -55,8 +56,9 @@ export class AuthService {
   public loggined(){
     const token = sessionStorage.getItem(TOKEN_KEY);
     const username = sessionStorage.getItem(NAME_KEY);
+    const  id = sessionStorage.getItem(ID_KEY)
     const authority = sessionStorage.getItem(ROLE_KEY);
-    if(username && token && authority){
+    if(username && token && authority && id){
       return true
     }
     return false;
