@@ -7,6 +7,7 @@ import java.util.Optional;
 public interface IUserService {
     Optional<User> findByUsername(String username);
 
+    Boolean existsByEmailAndIdIsNot(String email, Long id);
     Boolean existsByEmail(String email);
     Boolean existsByUsername(String username);
 

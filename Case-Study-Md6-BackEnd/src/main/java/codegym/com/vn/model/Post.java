@@ -16,15 +16,9 @@ public class Post {
     private String content;
     private String description;
     private String avatarPost;
-
-    @ManyToOne
-    private Status status;
-
-    @ManyToOne
-    private HashTags hashTags;
-
-    @ManyToOne
-    private User user;
+    private Long statusId;
+    private Long hashTagsId;
+    private Long userId;
 
 
 }

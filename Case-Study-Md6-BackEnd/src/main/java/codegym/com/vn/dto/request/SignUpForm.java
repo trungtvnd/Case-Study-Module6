@@ -10,10 +10,6 @@ public class SignUpForm {
 
     @NotBlank
     @Size(min = 3, max = 50)
-    private String fullName;
-
-    @NotBlank
-    @Size(min = 3, max = 50)
     private String username;
 
     @NotBlank
@@ -38,14 +34,6 @@ public class SignUpForm {
     @NotBlank
     @Size(min = 6, max = 40)
     private String rePassword;
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
 
     public String getUsername() {
         return username;

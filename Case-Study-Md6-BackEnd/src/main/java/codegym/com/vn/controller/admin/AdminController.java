@@ -26,8 +26,8 @@ public class AdminController {
     @Autowired
     private IAdminService iAdminService;
 
-    @Autowired
-    private IPostService iPostService;
+//    @Autowired
+//    private IPostService iPostService;
 
     @Autowired
     JwtProvider jwtProvider;
@@ -48,14 +48,14 @@ public class AdminController {
     }
 
 
-    @GetMapping("/findByName/{title}")
-    public ResponseEntity<Iterable<Post>> findAllPostByTitle(@PathVariable("title") String title) {
-        Iterable<Post> posts = iPostService.findByName(title);
-        if (!posts.iterator().hasNext()) {
-            new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(posts, HttpStatus.OK);
-    }
+//    @GetMapping("/findByName/{title}")
+//    public ResponseEntity<Iterable<Post>> findAllPostByTitle(@PathVariable("title") String title) {
+//        Iterable<Post> posts = iPostService.findByName(title);
+//        if (!posts.iterator().hasNext()) {
+//            new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//        }
+//        return new ResponseEntity<>(posts, HttpStatus.OK);
+//    }
 
     @GetMapping("user/{id}")
     public ResponseEntity<User> findUserById(@PathVariable("id") Long id) {

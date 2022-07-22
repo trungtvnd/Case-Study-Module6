@@ -29,6 +29,11 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
+    public Boolean existsByEmailAndIdIsNot(String email, Long id) {
+        return repository.existsByEmailAndIdIsNot(email, id);
+    }
+
+    @Override
     public Boolean existsByEmail(String email) {
         return repository.existsByEmail(email);
     }
@@ -45,19 +50,8 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public User save(User user) {
-//        validateUser(user)
-
         return repository.save(user);
     }
-//    public User validateUser(User user){
-//       String regex = "^[0-9]{10}";
-//       Pattern pattern = Pattern.compile(regex);
-//       if(!pattern.matcher(user.getPhone()).find()){
-//
-//       }
-//        return user;
-//    }
-
 
     @Override
     public Iterable<User> findAll() {
