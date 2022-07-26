@@ -18,7 +18,7 @@ public class JwtProvider {
     private String jwtSecret="jwtGrokonezSecretKey";
 
 
-    private int jwtExpiration = 86400;
+    private int jwtExpiration = 8640000;
 
     public String generateJwtToken(UserPrinciple userPrincipal) {
         return generateTokenFromUsername(userPrincipal.getUsername());

@@ -1,7 +1,11 @@
 package codegym.com.vn.controller.admin;
 
+import codegym.com.vn.dto.UserDTO;
 import codegym.com.vn.dto.request.ChangeStatusUserForm;
+import codegym.com.vn.dto.request.Filter;
+import codegym.com.vn.dto.response.FailedResponse;
 import codegym.com.vn.dto.response.ResponseMessage;
+import codegym.com.vn.enums.ErrorCodeEnum;
 import codegym.com.vn.model.Post;
 import codegym.com.vn.model.User;
 import codegym.com.vn.security.jwt.JwtAuthTokenFilter;
@@ -9,6 +13,7 @@ import codegym.com.vn.security.jwt.JwtProvider;
 import codegym.com.vn.service.Account.IUserService;
 import codegym.com.vn.service.interfaceService.IAdminService;
 import codegym.com.vn.service.interfaceService.IPostService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +21,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -38,13 +45,31 @@ public class AdminController {
     IUserService userService;
 
 
-    @GetMapping
-    public ResponseEntity<Iterable<User>> showAll() {
-        Iterable<User> users = iAdminService.findAll();
-        if (!users.iterator().hasNext()) {
-            new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    @PostMapping("/list-user")
+    public ResponseEntity<?> search(HttpServletRequest request,
+                                    @RequestBody List<Filter> filter,
+                                    @RequestParam(required = false, defaultValue = "0") Integer page,
+                                    @RequestParam(required = false, defaultValue = "10") Integer size,
+                                    @RequestParam(value = "query", required = false) String query,
+                                    @RequestParam(value = "asc", required = false) String asc,
+                                    @RequestParam(value = "desc", required = false) String desc) {
+        String jwt = jwtAuthTokenFilter.getJwt(request);
+        String username = jwtProvider.getUserNameFromJwtToken(jwt);
+        if (userService.existsByUsername(username)){
+            List<User> users = userService.getResult(filter);
+            if (users.isEmpty()) {
+                new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            List<UserDTO> list = new ArrayList<>();
+            users.forEach(s -> {
+                UserDTO dto = new UserDTO();
+                BeanUtils.copyProperties(s, dto);
+                list.add(dto);
+            });
+
+            return new ResponseEntity<>(list, HttpStatus.OK);
         }
-        return new ResponseEntity<>(users, HttpStatus.OK);
+        return new ResponseEntity<>(new FailedResponse(ErrorCodeEnum.ACCOUNT_NOT_FOUND), HttpStatus.NOT_FOUND);
     }
 
 

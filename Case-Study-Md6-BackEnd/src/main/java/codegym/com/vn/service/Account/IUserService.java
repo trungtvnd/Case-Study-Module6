@@ -1,7 +1,10 @@
 package codegym.com.vn.service.Account;
+import codegym.com.vn.dto.request.Filter;
 import codegym.com.vn.model.User;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface IUserService {
@@ -24,5 +27,7 @@ public interface IUserService {
     Optional<User> findByFullName(String fullName);
 
     Optional<User> findByEmail(String email);
+
+    List<User> getResult(List<Filter> filter);
 
 }
