@@ -1,5 +1,6 @@
 package codegym.com.vn.controller.auth;
 
+import codegym.com.vn.constraint.createconstraint.UserConstraint;
 import codegym.com.vn.dto.UserDTO;
 import codegym.com.vn.dto.request.*;
 import codegym.com.vn.dto.response.*;
@@ -28,6 +29,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -41,6 +43,7 @@ import java.util.stream.Collectors;
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/auth")
+@Validated
 public class AuthRestAPIsController {
     @Autowired
     AuthenticationManager authenticationManager;
@@ -92,7 +95,7 @@ public class AuthRestAPIsController {
 
 
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpForm signUpRequest) {
+    public ResponseEntity<?> registerUser(@UserConstraint @RequestBody SignUpForm signUpRequest) {
         if (userService.existsByUsername(signUpRequest.getUsername())) {
             return new ResponseEntity<>(new ResponseMessage("User existed, please entry other user"),
                     HttpStatus.OK);
@@ -104,28 +107,26 @@ public class AuthRestAPIsController {
         }
 
         // Creating user's account
-        User user = new User(signUpRequest.getUsername(), signUpRequest.getEmail(),
-                passwordEncoder.encode(signUpRequest.getPassword()));
+        User user = new User(signUpRequest.getUsername().trim(), signUpRequest.getEmail().trim(),
+                passwordEncoder.encode(signUpRequest.getPassword().trim()), signUpRequest.getIsDelete(), signUpRequest.getStatus());
 
         Set<String> strRoles = signUpRequest.getRole();
         Set<Role> roles = new HashSet<>();
 
         strRoles.forEach(role -> {
             switch (role) {
-                case "admin":
+                case "ADMIN":
                     Role adminRole = roleService.findByName(RoleName.ADMIN)
                             .orElseThrow(() -> new RuntimeException("Fail! -> Cause: User Role not find."));
                     roles.add(adminRole);
 
                     break;
-                default:
+                case "USER":
                     Role userRole = roleService.findByName(RoleName.USER)
                             .orElseThrow(() -> new RuntimeException("Fail! -> Cause: User Role not find."));
                     roles.add(userRole);
             }
         });
-
-        user.setRoles(roles);
         userService.save(user);
 
         return new ResponseEntity<>(new ResponseMessage("Success"), HttpStatus.OK);
@@ -205,7 +206,7 @@ public class AuthRestAPIsController {
 //    }
 
     @GetMapping("find-user-by-username/{username}")
-    public ResponseEntity<?> findUserByuserName(@PathVariable("username") String username) {
+    public ResponseEntity<?> findUserByUserName(@PathVariable("username") String username) {
         Optional<User> user = userService.findByUsername(username);
         if (!user.isPresent()) {
             return new ResponseEntity<>(new FailedResponse(new NullPointerException()), HttpStatus.BAD_REQUEST);

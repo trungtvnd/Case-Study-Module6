@@ -1,17 +1,30 @@
 package codegym.com.vn.controller.user;
 
 
-import codegym.com.vn.dto.response.ResponseMessage;
+import codegym.com.vn.dto.PostDTO;
+import codegym.com.vn.dto.request.Filter;
+import codegym.com.vn.dto.response.FailedResponse;
+import codegym.com.vn.dto.response.SuccessResponse;
+import codegym.com.vn.enums.ErrorCodeEnum;
 import codegym.com.vn.model.*;
+import codegym.com.vn.security.jwt.JwtAuthTokenFilter;
+import codegym.com.vn.security.jwt.JwtProvider;
 import codegym.com.vn.service.Account.IUserService;
-import codegym.com.vn.service.interfaceService.*;
+import codegym.com.vn.service.impl.PostService;
+import codegym.com.vn.util.CriteriaUtil;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Optional;
+
 
 @RestController
 @CrossOrigin("*")
@@ -215,5 +228,53 @@ public class PostController {
 //        return new ResponseEntity<>(new ResponseMessage("delete ok"),HttpStatus.OK);
 //    }
 
+    @Autowired
+    private PostService postService;
+
+    @Autowired
+    JwtProvider jwtProvider;
+
+    @Autowired
+    JwtAuthTokenFilter jwtAuthTokenFilter;
+    @Autowired
+    IUserService userService;
+
+    @PostMapping("/save")
+    public ResponseEntity<?> createPost(@RequestBody PostDTO dto) {
+        Post post = new Post();
+        BeanUtils.copyProperties(dto, post);
+        postService.save(post);
+        PostDTO dto1 = new PostDTO();
+        BeanUtils.copyProperties(post, dto1);
+        return ResponseEntity.ok(dto1);
+    }
+
+    @PostMapping("/search")
+    public ResponseEntity<?> search(HttpServletRequest request,
+                                    @RequestBody List<Filter> filter,
+                                    @RequestParam(required = true) Integer page,
+                                    @RequestParam(required = true) Integer size,
+                                    @RequestParam(value = "query", required = false) String query,
+                                    @RequestParam(value = "asc", required = false) String asc,
+                                    @RequestParam(value = "desc", required = false) String desc) {
+        String jwt = jwtAuthTokenFilter.getJwt(request);
+        String username = jwtProvider.getUserNameFromJwtToken(jwt);
+        if (userService.existsByUsername(username)){
+            Pageable pageable = PageRequest.of(page, size, CriteriaUtil.sort(asc,desc));
+            Page<PostDTO> list = postService.getResult(filter, pageable).map(PostDTO::new);
+            if (list.isEmpty()){
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(new SuccessResponse(list), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(new FailedResponse(ErrorCodeEnum.ACCOUNT_NOT_FOUND), HttpStatus.NOT_FOUND);
+    }
+
+    @PostMapping("/delete")
+    public void delete(@RequestBody PostDTO dto){
+        Post entity = new Post();
+        BeanUtils.copyProperties(dto, entity);
+        postService.delete(entity);
+    }
 
 }

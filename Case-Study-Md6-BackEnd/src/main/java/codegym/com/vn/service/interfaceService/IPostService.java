@@ -1,22 +1,15 @@
 package codegym.com.vn.service.interfaceService;
 
+import codegym.com.vn.dto.request.Filter;
 import codegym.com.vn.model.Post;
+import codegym.com.vn.model.User;
 import codegym.com.vn.service.InterfaceGeneral;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.awt.*;
+import java.util.List;
 
 public interface IPostService extends InterfaceGeneral<Post> {
-//    Iterable<Post> findPostByIdUser(Long idUser);
-//
-//    Iterable<Post> findPostByIdStatus(Long idStatus);
-//
-//    Iterable<Post> findPostByHashtag(Long idHashtag);
-//
-//    Iterable<Post> findPostByHashtagLimit(Long idPost,Long idHashtag);
-//
-//    Iterable<Post> findAllByHashTags_IdAndUser_Id(Long idHashtag, Long idUser);
-//
-//    Iterable<Post> findAllPostByTopComment();
-
-
+    Page<Post> getResult(List<Filter> filter, Pageable pageable);
 }

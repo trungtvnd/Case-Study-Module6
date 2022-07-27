@@ -17,5 +17,7 @@ public class CommentPost {
     private Long postId;
     private Long userID;
 
+    private Integer isDelete;
+
 
 }

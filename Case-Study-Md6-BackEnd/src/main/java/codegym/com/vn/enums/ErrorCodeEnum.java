@@ -25,7 +25,8 @@ public enum ErrorCodeEnum {
 
     UPDATE_ERROR_EMAIL_DUPLICATE("err.update.duplicate001"),
     PASSWORD_NOT_MATCH("err.password.wrong"),
-    RE_PASSWORD_NOT_MATCH("err.repassword.wrong")
+    RE_PASSWORD_NOT_MATCH("err.repassword.wrong"),
+    PROPERTIES_BLANK("err.properties.blank")
     ;
 
     private String errorCode;

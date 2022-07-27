@@ -1,20 +1,20 @@
 package codegym.com.vn.dto.request;
 
 public class ChangeStatusUserForm {
-    private String statusUser;
+    private Integer statusUser;
 
     public ChangeStatusUserForm() {
     }
 
-    public ChangeStatusUserForm(String statusUser) {
+    public ChangeStatusUserForm(Integer statusUser) {
         this.statusUser = statusUser;
     }
 
-    public String getStatusUser() {
+    public Integer getStatusUser() {
         return statusUser;
     }
 
-    public void setStatusUser(String statusUser) {
+    public void setStatusUser(Integer statusUser) {
         this.statusUser = statusUser;
     }
 }

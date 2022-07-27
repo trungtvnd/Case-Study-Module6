@@ -1,6 +1,8 @@
 package codegym.com.vn.service.Account;
 import codegym.com.vn.dto.request.Filter;
 import codegym.com.vn.model.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
@@ -14,7 +16,7 @@ public interface IUserService {
     Boolean existsByEmail(String email);
     Boolean existsByUsername(String username);
 
-    Optional<User> findById(Long id);
+    Optional<User> findByIdAndIsDelete(Long id, int isDelete);
 
     User save(User user);
 
@@ -28,6 +30,8 @@ public interface IUserService {
 
     Optional<User> findByEmail(String email);
 
-    List<User> getResult(List<Filter> filter);
+    Page<User> getResult(List<Filter> filter, Pageable pageable);
+
+    Page<User> getResultList(Specification<User> specification, Pageable pageable);
 
 }

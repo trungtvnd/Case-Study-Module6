@@ -14,7 +14,7 @@ public interface InterfaceGeneral<T> {
 
     T save(T t);
 
-    void delete(Long id);
+    void delete(T t);
 
     Page<T> findPage(Pageable pageable);
 

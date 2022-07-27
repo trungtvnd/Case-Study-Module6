@@ -1,21 +1,17 @@
-package codegym.com.vn.model;
+package codegym.com.vn.dto;
 
-import codegym.com.vn.dto.PostDTO;
+import codegym.com.vn.model.Post;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.BeanUtils;
 
-import javax.persistence.*;
 import java.util.Date;
 
-@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Post {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class PostDTO {
     private Long id;
     private Date dateCreate;
     private String title;
@@ -26,8 +22,7 @@ public class Post {
     private Long hashTagsId;
     private Long userId;
     private Integer isDelete;
-
-    public Post(PostDTO dto){
-        BeanUtils.copyProperties(dto, this);
+    public PostDTO(Post source){
+        BeanUtils.copyProperties(source, this);
     }
 }

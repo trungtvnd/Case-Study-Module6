@@ -8,6 +8,8 @@ import codegym.com.vn.model.User;
 import codegym.com.vn.repository.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -50,9 +52,10 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public Optional<User> findById(Long id) {
-        return repository.findById(id);
+    public Optional<User> findByIdAndIsDelete(Long id, int isDelete) {
+        return repository.findByIdAndIsDelete(id, isDelete);
     }
+
 
     @Override
     public User save(User user) {
@@ -85,11 +88,16 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public List<User> getResult(List<Filter> filter) {
+    public Page<User> getResult(List<Filter> filter, Pageable pageable) {
         if (filter.size() > 0){
-            return repository.findAll(getSpecificationFromFilter(filter));
+            return getResultList(getSpecificationFromFilter(filter), pageable);
         }
-        return repository.findAll();
+        return repository.findAll(pageable);
+    }
+
+    @Override
+    public Page<User> getResultList(Specification<User> specification, Pageable pageable) {
+        return repository.findAll(specification, pageable);
     }
 
     public Specification<User> getSpecificationFromFilter(List<Filter> filter){
@@ -148,7 +156,4 @@ public class UserServiceImpl implements IUserService {
         }
         return lists;
     }
-
-
-
 }

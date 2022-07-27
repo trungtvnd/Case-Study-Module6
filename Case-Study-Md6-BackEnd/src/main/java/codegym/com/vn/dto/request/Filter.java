@@ -1,15 +1,20 @@
 package codegym.com.vn.dto.request;
 
 import codegym.com.vn.enums.QueryOperator;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.*;
+import lombok.experimental.Accessors;
 
 import java.util.List;
 
-@Getter
-@Setter
-@Builder
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Accessors(chain = true)
+@EqualsAndHashCode(callSuper = false)
 public class Filter {
     private String field;
     private QueryOperator operator;

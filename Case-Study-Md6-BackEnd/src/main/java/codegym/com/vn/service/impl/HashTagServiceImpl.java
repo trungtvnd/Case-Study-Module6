@@ -27,7 +27,7 @@ public class HashTagServiceImpl implements IHashTagService {
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(HashTags hashTags) {
 
     }
 

@@ -10,11 +10,14 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import java.nio.file.AccessDeniedException;
 import java.util.Set;
 
 @ControllerAdvice
 @Slf4j
 public class ExceptionController {
+
+
 
 	@ExceptionHandler(ConstraintViolationException.class)
 	public ResponseEntity<?> handleException(ConstraintViolationException e) {
@@ -25,6 +28,12 @@ public class ExceptionController {
 	@ExceptionHandler(CustomException.class)
 	public ResponseEntity<?> handleCustomException(CustomException e) {
 		log.error("Error occur!", e);
+		return new ResponseEntity<>(new FailedResponse(e), HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(AccessDeniedException.class)
+	public ResponseEntity<?> handleException (AccessDeniedException e){
+		log.error("error occur", e);
 		return new ResponseEntity<>(new FailedResponse(e), HttpStatus.BAD_REQUEST);
 	}
 

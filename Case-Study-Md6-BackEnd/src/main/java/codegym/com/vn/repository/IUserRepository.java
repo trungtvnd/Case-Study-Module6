@@ -18,4 +18,5 @@ public interface IUserRepository extends JpaRepository<User,Long>, JpaSpecificat
     Optional<User> findByFullName(String fullName);
     Optional<User> findByEmail(String email);
 
+    Optional<User> findByIdAndIsDelete(Long id, int isDelete);
 }

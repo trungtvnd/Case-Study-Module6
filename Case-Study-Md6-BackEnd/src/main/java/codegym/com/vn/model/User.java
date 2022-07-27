@@ -42,13 +42,14 @@ public class  User {
     @Email
     private String email;
 
-    @NotBlank
-    @Size(min = 3, max = 50)
+
     private String fullName;
     private String address;
     private String phone;
     private String avatar;
-    private String status;
+    private Integer status;
+    private Integer countLogin;
+    private Integer isDelete;
 
 
     @JsonIgnore
@@ -58,13 +59,16 @@ public class  User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
-    public User(@NotBlank @Size(min = 3, max = 50) String username, @NotBlank @Size(max = 50) @Email String email, @NotBlank @Size(min = 6, max = 100) String password) {
+    public User(@NotBlank @Size(min = 3, max = 50) String username, @NotBlank @Size(max = 50) @Email String email, @NotBlank @Size(min = 6, max = 100) String password, Integer isDelete, Integer status) {
         this.userName = username;
         this.email = email;
         this.password = password;
+        this.isDelete = isDelete;
+        this.status = status;
     }
 
     public User() {
 
     }
+
 }

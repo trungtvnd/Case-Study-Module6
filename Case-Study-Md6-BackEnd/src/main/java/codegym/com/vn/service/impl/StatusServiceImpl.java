@@ -27,7 +27,7 @@ public class StatusServiceImpl implements IStatusService {
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(Status status) {
 
     }
 

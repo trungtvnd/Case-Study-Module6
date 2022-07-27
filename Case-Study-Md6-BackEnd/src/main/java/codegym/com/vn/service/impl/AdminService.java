@@ -30,7 +30,7 @@ public class AdminService implements IAdminService {
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(User user) {
 
     }
 
